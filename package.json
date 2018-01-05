@@ -1,0 +1,19 @@
+{
+  "name": "ntask-api",
+  "version": "1.0.0",
+  "description": "Task management API",
+  "main": "index.js",
+  "scripts": {
+    "start": "babel-node index.js"
+  },
+  "author": "Bruno Feldmann Prusch",
+  "dependencies": {
+    "babel": "^6.23.0",
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "consign": "^0.1.6",
+    "express": "^4.16.2",
+    "sequelize": "^4.27.0",
+    "sqlite3": "^3.1.13"
+  }
+}
