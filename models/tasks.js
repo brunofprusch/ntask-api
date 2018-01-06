@@ -1,10 +1,10 @@
-module.exports = app => {
-    return {
-        findAll: (param, callback) => {
-            return callback([
-                {title: "Fazer o almoço"},
-                {title: "Estudar Node.js"}
-            ]);
-        }
-    }
+function findAll(param, callback) {
+    return callback([
+        {title: "Fazer o almoço"},
+        {title: "Estudar Node.js"}
+    ]);
+}
+
+module.exports = {
+    findAll
 }

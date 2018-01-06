@@ -1,4 +1,4 @@
-module.exports = app => {
-    app.set("port", 3000);
-    app.set("json spaces", 4);
+module.exports = {
+    port: 3000,
+    jsonSpaces: 4
 };
