@@ -5,8 +5,8 @@ import { join } from "path";
 const app = express();
 
 consign()
-    .include("dao/db.js")
-    .then("models")
+    .include("libs/config.js")
+    .then("dao/db.js")
     .then("libs/middlewares.js")
     .then("routes")
     .then("libs/boot.js")
