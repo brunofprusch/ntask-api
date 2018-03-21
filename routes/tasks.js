@@ -4,27 +4,11 @@ module.exports = app => {
 
     const Tasks = app.dao.db.models.Tasks;
 
-    /*
-    app.get("/tasks", (req, res) => {
-        
-        console.log("Will be find all taks!")
-        
-        Tasks.findAll({})
-            .then(tasks => {
-                res.json({tasks: tasks});
-            });
-    });
-    */
-
     app.route("/tasks")
-        .all((req, res, next) => {
-            if (req.body) {
-                delete req.body.id;
-            }
-            next();
-        })
         .get((req, res) => {
-            const result = Tasks.findAll({})
+            console.log("Find All ola ola ola");
+
+            Tasks.findAll({})
                 .then(result => {
                     res.json(result);
                 })
@@ -32,21 +16,47 @@ module.exports = app => {
                     res.status(412).json({msg: error.message});
                 });                
         })
-        .post((res, req) => {
-
+        .post((req, res) => {
+            Tasks.create(req.body)
+                .then(result => {
+                    res.json(result);
+                })
+                .catch(error => {
+                    res.status(412).json({msg: error.message});
+                });
         });
 
-    app.route("/tasks/:id")
-        .all((req, res) => {
-        // Middleware de pré-execução das rotas
-        })
+        app.route("/tasks/:id")       
         .get((req, res) => {
-        // "/tasks/1": Consulta uma tarefa
+            Tasks.findOne({where: req.params})
+                .then(result => {
+                    if (result) {
+                        res.json(result);
+                    } else {
+                        res.sendStatus(404);
+                    }
+                })
+                .catch(error => {
+                    res.status(412).json({msg: error.message});
+                });
         })
         .put((req, res) => {
-        // "/tasks/1": Atualiza uma tarefa
+            Tasks.update(req.body, {where: req.params})
+                .then(result => {
+                    res.sendStatus(204)
+                })
+                .catch(error => {
+                    res.status(412).json({msg: error.message});
+                });
         })
         .delete((req, res) => {
-        // "/tasks/1": Exclui uma tarefa
+            Tasks.destroy({where: req.params})
+                .then(result => {
+                    res.sendStatus(204)
+                })
+                .catch(error => {
+                    res.status(412).json({msg: error.message});
+                });
         });
+
 }
