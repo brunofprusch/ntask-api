@@ -6,7 +6,9 @@ module.exports = {
         dialect: "sqlite",
         storage: "ntaskapi.sqlite",
         define: {
-        underscored: true
+            nderscored: true
         }
-    }
+    },
+    jwtSecret: "Nta$K-AP1",
+    jwtSession: {session: false}
 };

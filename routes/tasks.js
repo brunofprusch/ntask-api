@@ -6,8 +6,6 @@ module.exports = app => {
 
     app.route("/tasks")
         .get((req, res) => {
-            console.log("Find All ola ola ola");
-
             Tasks.findAll({})
                 .then(result => {
                     res.json(result);
@@ -26,7 +24,7 @@ module.exports = app => {
                 });
         });
 
-        app.route("/tasks/:id")       
+    app.route("/tasks/:id")       
         .get((req, res) => {
             Tasks.findOne({where: req.params})
                 .then(result => {
