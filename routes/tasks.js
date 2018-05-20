@@ -5,8 +5,9 @@ module.exports = app => {
     const Tasks = app.dao.db.models.Tasks;
 
     app.route("/tasks")
+        .all(app.auth.authenticate())
         .get((req, res) => {
-            Tasks.findAll({})
+            Tasks.findAll({ where: { UserId: req.user.id }})
                 .then(result => {
                     res.json(result);
                 })
@@ -15,6 +16,7 @@ module.exports = app => {
                 });                
         })
         .post((req, res) => {
+            req.body.UserId = req.user.id;
             Tasks.create(req.body)
                 .then(result => {
                     res.json(result);
@@ -24,9 +26,10 @@ module.exports = app => {
                 });
         });
 
-    app.route("/tasks/:id")       
+    app.route("/tasks/:id")     
+        .all(app.auth.authenticate())  
         .get((req, res) => {
-            Tasks.findOne({where: req.params})
+            Tasks.findOne({where: { id: req.params.id, UserId: req.user.id  } })
                 .then(result => {
                     if (result) {
                         res.json(result);
