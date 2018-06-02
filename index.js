@@ -4,11 +4,13 @@ import { join } from "path";
 
 const app = express();
 
-consign()
+consign({verbose: false})
     .include("libs/config.js")
     .then("dao/db.js")
     .then("auth.js")
     .then("libs/middlewares.js")
     .then("routes")
     .then("libs/boot.js")
-    .into(app)
+    .into(app);
+
+module.exports = app;

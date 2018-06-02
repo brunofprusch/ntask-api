@@ -1,14 +1,7 @@
-module.exports = {
-    database: "ntaskapi",
-    username: "",
-    password: "",
-    params: {
-        dialect: "sqlite",
-        storage: "ntaskapi.sqlite",
-        define: {
-            nderscored: true
-        }
-    },
-    jwtSecret: "Nta$K-AP1",
-    jwtSession: {session: false}
+module.exports = app => {
+    const env = process.env.NODE_ENV;
+    if (Boolean(env)) {
+        return require(`./config.${env}.js`);
+    }
+    return require("./config.development.js");
 };

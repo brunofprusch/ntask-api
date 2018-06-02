@@ -42,22 +42,25 @@ module.exports = app => {
                 });
         })
         .put((req, res) => {
-            Tasks.update(req.body, {where: req.params})
+            const body = {
+                title: req.body.title,
+                done: req.body.done
+            };
+            Tasks.update(body, {where: { id: req.params.id, UserId: req.user.id }})
                 .then(result => {
-                    res.sendStatus(204)
+                    res.sendStatus(204);
                 })
                 .catch(error => {
                     res.status(412).json({msg: error.message});
                 });
         })
         .delete((req, res) => {
-            Tasks.destroy({where: req.params})
+            Tasks.destroy({where: {id: req.params.id, UserId: req.user.id }})
                 .then(result => {
-                    res.sendStatus(204)
+                    res.sendStatus(204);
                 })
                 .catch(error => {
                     res.status(412).json({msg: error.message});
                 });
         });
-
 }

@@ -7,31 +7,35 @@ module.exports = app => {
     const Users = app.dao.db.models.Users,
           cfg = app.libs.config;
 
-    app.get("/users/:id", (req, res) => {
-        Users.findById(req.params.id, {
-            attributes: ["id", "name", "email", "password"]
-        })
-        .then(result => res.json(result))
-        .catch(error => {
-            res.status(412).json({msg: error.message});
-        });
-    });
-
-    app.delete("/users/:id", (req, res) => {
-        Users.destroy({where: {id: req.params.id} })
-        .then(result => res.sendStatus(204))
-        .catch(error => {
-            res.status(412).json({msg: error.message});
-        });
+    app.post("/user", (req, res) => {
+        createUser(req, res);
     });
     
     app.post("/signin", (req, res) => {
         signin(req, res);
     });
 
-    app.post("/users", (req, res) => {
-        createUser(req, res);
-    });
+    app.route("/users")
+        .all(app.auth.authenticate())
+        .get((req, res) => {
+            Users.findById(req.user.id, {
+                attributes: ["id", "name", "email", "password"]
+            })
+            .then(result => res.json(result))
+            .catch(error => {
+                res.status(412).json({msg: error.message});
+            });
+        })
+        .delete((req, res) => {
+            Users.destroy({where: { id: req.user.id }})
+            .then(result => res.sendStatus(204))
+            .catch(error => {
+                res.status(412).json({msg: error.message});
+            });
+        });
+
+
+  
 
     async function signin(req, res) {
         try {
@@ -66,7 +70,5 @@ module.exports = app => {
         } catch (e) {
             res.status(412).json({msg: error.message});
         }
-    }
-
-   
+    } 
 };
